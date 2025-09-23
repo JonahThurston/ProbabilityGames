@@ -80,7 +80,7 @@ def attackerWinChance(sampleSize = 10000):
   plt.grid(True, linestyle='--', alpha=0.6)
   plt.show()
 
-def equalArmySizeAnalysis(sampleSize = 10000):
+def equalArmySizeAnalysis(sampleSize = 100000):
   armySize = 10
 
   countResultInstances = {}
@@ -90,9 +90,34 @@ def equalArmySizeAnalysis(sampleSize = 10000):
     if result in countResultInstances:
       countResultInstances[result] += 1
     else:
-      countResultInstances[result] = 0
+      countResultInstances[result] = 1
 
   resultAverages = {key: value / sampleSize for key, value in countResultInstances.items()}
+
+  def parse_key(k):
+      a, b = k.split("to")
+      return (int(a), int(b))
+  sorted_items = sorted(resultAverages.items(), key=lambda x: parse_key(x[0]))
+
+  labels = [k for k, _ in sorted_items]
+  values = [v for _, v in sorted_items]
+
+  # --- Plot ---
+  plt.figure(figsize=(12,6))
+  plt.bar(labels, values)
+  plt.title(f"Battle Outcomes Distribution (Attacker = Defender = {armySize})")
+  plt.xlabel("Final Outcome (Attacker to Defender)")
+  plt.ylabel("Probability")
+
+  # Scale y-axis based on data (max value + padding)
+  ymax = max(values) * 1.2
+  plt.ylim(0, ymax)
+
+  # Ticks every 1% (0.01)
+  plt.yticks(np.arange(0, ymax, 0.01))
+
+  plt.grid(axis='y', linestyle='--', alpha=0.6)
+  plt.show()
 
 diceNumMatchup()
 attackerWinChance()
