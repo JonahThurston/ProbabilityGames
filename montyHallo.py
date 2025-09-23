@@ -54,8 +54,6 @@ for size in SAMPLE_SIZES:
   lossRates.append(lossRate)
   print(f"sample size: {size}    stay: {stayWinRate}    switch: {switchWinRate}   loss: {lossRate}")
 
-import matplotlib.pyplot as plt
-
 # Create evenly spaced positions
 x = range(len(SAMPLE_SIZES))
 
