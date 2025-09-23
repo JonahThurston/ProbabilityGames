@@ -2,7 +2,7 @@ import random
 import matplotlib.pyplot as plt
 
 PRIZES = ['GOAT', 'GOAT', 'CAR']
-SAMPLE_SIZES = [1, 10, 100, 1000, 10000, 100000, 1000000]
+SAMPLE_SIZES = [10, 30, 50, 70, 90, 100, 250, 500, 750, 1000]
 
 def runGame():
   doors = PRIZES
@@ -54,16 +54,29 @@ for size in SAMPLE_SIZES:
   lossRates.append(lossRate)
   print(f"sample size: {size}    stay: {stayWinRate}    switch: {switchWinRate}   loss: {lossRate}")
 
-plt.figure(figsize=(10, 6))
-plt.plot(SAMPLE_SIZES, stayWinRates, marker='o', label="Stay Win Rate")
-plt.plot(SAMPLE_SIZES, switchWinRates, marker='o', label="Switch Win Rate")
-plt.plot(SAMPLE_SIZES, lossRates, marker='o', label="Loss Rate")
+import matplotlib.pyplot as plt
 
-plt.xscale('log')  # log scale makes the growth in sample size clearer
-plt.ylim(0, 1)     # probabilities range between 0 and 1
-plt.xlabel("Sample Size (log scale)")
+# Create evenly spaced positions
+x = range(len(SAMPLE_SIZES))
+
+plt.figure(figsize=(10, 6))
+
+plt.plot(x, stayWinRates, marker='o', linestyle='-', label="Stay Win Rate")
+plt.plot(x, switchWinRates, marker='o', linestyle='-', label="Switch Win Rate")
+plt.plot(x, lossRates, marker='o', linestyle='-', label="Loss Rate")
+
+# Reference lines at theoretical values
+plt.axhline(1/3, color='red', linestyle='--', alpha=0.6, label="Theoretical Stay (1/3)")
+plt.axhline(2/3, color='green', linestyle='--', alpha=0.6, label="Theoretical Switch (2/3)")
+
+plt.ylim(0, 1)
+plt.xticks(x, SAMPLE_SIZES)  # map positions back to labels
+plt.xlabel("Sample Size")
 plt.ylabel("Rate")
-plt.title("Monty Hall Simulation Results")
+plt.title("Monty Hall Simulation Results (Evenly Spaced Sample Sizes)")
 plt.legend()
+
+plt.show()
+
 
 plt.show()
